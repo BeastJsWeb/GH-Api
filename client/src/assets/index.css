@@ -1,0 +1,11 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+*{
+  font-size: calc((1vw + 1vh) / 1.8)
+}
+
+body {
+  background-color: rgb(244 244 245)
+}
