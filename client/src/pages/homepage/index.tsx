@@ -1,27 +1,35 @@
-import { useSearchUsersQuery, useLazyGetUserReposQuery } from '../../store/github/github.api'
+import {FC} from 'react'
+
+import { gitHubAPI } from '../../services/gitHubService'
 import { Input } from '../../components/UI/Input'
 import { useInput } from '../../hooks/useInput'
-import { Dropdown } from './components/Dropdown'
+import { Dropdown } from '../../components/Dropdown'
 import { RepoCard } from './components/RepoCard'
 import { RepoOwnerCard } from './components/RepoOwnerCard'
 import { Loader } from '../../components/UI/Loader'
 import { Error } from '../../components/UI/Error'
 
-export const Homepage = () => {
+export const Homepage: FC = () => {
   const search = useInput('')
   
-  const gitHubUsers = useSearchUsersQuery(search.value, {
-    skip: search.value.length < 3,
-    refetchOnFocus: true
-  })
+  const {
+    data: users = [], 
+    isLoading, 
+    isError
+  } = gitHubAPI.useSearchUsersQuery(search.value, 
+    {
+      skip: search.value.length < 3,
+      refetchOnFocus: true
+    }
+  )
 
   const [fetchRepos, 
     {
-      isLoading: areReposLoading, 
-      data: repos, 
+      data: repos = [],
+      isLoading: areReposLoading,  
       isError: areReposError
     }
-  ] = useLazyGetUserReposQuery()
+  ] = gitHubAPI.useLazyGetUserReposQuery()
 
   const handleGetRepos = (username: string) => {
     fetchRepos(username)
@@ -35,7 +43,9 @@ export const Homepage = () => {
         placeholder='Search GitHub Users...' 
       >
         <Dropdown 
-          {...gitHubUsers} 
+          data={users}
+          isLoading={isLoading}
+          isError={isError}
           onClick={handleGetRepos} 
         />
       </Input>
@@ -44,7 +54,7 @@ export const Homepage = () => {
           <Loader />
         }
         <RepoOwnerCard repos={repos} />
-        {repos?.map(repo =>
+        {repos.map(repo =>
           <RepoCard repo={repo} key={repo.id} />
         )}
         {areReposError &&  

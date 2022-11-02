@@ -1,12 +1,13 @@
+import {FC} from 'react'
 import { NavLink } from 'react-router-dom'
 
 import {FaRegStar} from 'react-icons/fa'
-import { useReduxSelector } from '../../../hooks/useReduxSelector'
+import { favouritesAPI } from '../../../services/FavouritesService'
 
-export const Navbar = () => {
-  const {favourites} = useReduxSelector(state => state.github)
+export const Navbar: FC = () => {
+  const {data = []} = favouritesAPI.useGetFavouritesQuery()
 
-  const isFav = favourites.length ? 'text-yellow-300' : ''
+  const isFav = data.length ? 'text-yellow-300' : ''
 
   return (
     <header 

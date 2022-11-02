@@ -1,8 +1,9 @@
+import {FC} from 'react'
 import {Outlet} from 'react-router-dom'
 
 import { Navbar } from './navbar'
 
-export const PageContainer = () => {
+export const PageContainer: FC = () => {
   return (
     <>
       <Navbar />

@@ -1,28 +1,39 @@
 import {FC} from 'react'
 
 import { IRepo } from '../../../models/repos'
-import {useActions} from '../../../hooks/useActions'
 import { Button, ButtonVariant } from '../../../components/UI/Button'
-import { useReduxSelector } from '../../../hooks/useReduxSelector'
 import {FaPlus, FaMinus} from 'react-icons/fa/index'
+import { favouritesAPI } from '../../../services/FavouritesService'
 
 interface repoCardProps {
-  repo: IRepo
+  repo: IRepo,
 }
 
 export const RepoCard: FC<repoCardProps> = ({repo}) => {
-  const {addFavourite, removeFavourite} = useActions()
+  const [addRepo] = favouritesAPI.useAddRepoMutation()
 
-  const {favourites} = useReduxSelector(state => state.github)
+  const [removeRepo] = favouritesAPI.useRemoveRepoMutation()
 
-  const handleAddFavourite = () => addFavourite(repo.html_url)
+  const {data = []} = favouritesAPI.useGetFavouritesQuery()
 
-  const handleRemoveFavourite = () => removeFavourite(repo.html_url)
+  const handleAddFavourite = async () => {
+    await addRepo({
+      id: repo.id ,
+      url: repo.html_url,
+      name: repo.full_name,
+      avatar: repo.owner.avatar_url,
+    }).unwrap()
+  }
+
+  const handleRemoveFavourite = async () => {
+    await removeRepo(repo.id).unwrap()
+  }
+
+  const addedRepo = data.find(fav => fav.id === repo.id)
 
   return (
-    <li 
-      className='w-calc-2 flex justify-between bg-gray-50 shadow-md hover:bg-gray-500
-        hover:text-white transition-all even:ml-1' 
+    <li className='w-calc-2 flex justify-between bg-gray-50 shadow-md hover:bg-gray-500
+      hover:text-white transition-all even:ml-1' 
     >
       <a href={repo.html_url} target='blank' className='py-2 px-6' >
         <h2 className='text-lg font-bold' >{repo.full_name}</h2>
@@ -31,19 +42,25 @@ export const RepoCard: FC<repoCardProps> = ({repo}) => {
           Watchers: <span className='mr-4 font-semibold' >{repo.watchers}</span>
           Language: <span className='font-semibold' >{repo.language}</span>
         </p>
-        <p className='text-sm opacity-60 py-2' >{repo?.description}</p>
+        <p className='text-sm opacity-60 py-2' >{repo.description}</p>
       </a>
-      {favourites.includes(repo.html_url)
+      {addedRepo
         ? 
         <Button 
+          key={repo.html_url}
           onClick={handleRemoveFavourite} 
           variant={ButtonVariant.remove} 
-        ><FaMinus /></Button>
+        >
+          <FaMinus />
+        </Button>
         : 
         <Button 
+          key={repo.html_url}
           onClick={handleAddFavourite} 
           variant={ButtonVariant.add}
-        ><FaPlus /></Button>
+        >
+          <FaPlus />
+        </Button>
       }
     </li>
   )

@@ -1,7 +1,7 @@
-import React from 'react';
+import {FC} from 'react';
 import { PublicRoutes } from './components/routes/publicRoutes';
 
-const App = () => {
+const App: FC = () => {
   return (
     <PublicRoutes />
   )

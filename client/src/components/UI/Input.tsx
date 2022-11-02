@@ -1,4 +1,4 @@
-import React, {FC, ChangeEventHandler} from 'react'
+import {FC, ChangeEventHandler} from 'react'
 import {DebounceInput} from 'react-debounce-input'
 
 interface inputProps {
@@ -15,6 +15,7 @@ export const Input: FC<inputProps> =
     placeholder, 
     children
   }) => {
+    
   return (
     <div className='relative flex w-full'>
       <DebounceInput 

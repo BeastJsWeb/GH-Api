@@ -1,21 +1,30 @@
-import { useReduxSelector } from '../../hooks/useReduxSelector'
+import {FC} from 'react'
+
 import { FavItem } from './components/favItem'
-//import { useGetFavouritesQuery } from '../../store/json-server/jsonServer.api'
+import { favouritesAPI } from '../../services/FavouritesService'
+import { Loader } from '../../components/UI/Loader'
+import { Error } from '../../components/UI/Error'
 
-export const Favourites = () => {
-  const {favourites} = useReduxSelector(state => state.github)
-  //const {data, isLoading} = useGetFavouritesQuery()
-
-  //console.log(data)
-  if (!favourites.length) return <p className='text-center' >No items</p>
+export const Favourites: FC = () => {
+  const {data = [], isLoading, isError} = favouritesAPI.useGetFavouritesQuery()
 
   return (
-    <>
-      <ul className='flex flex-col gap-5' >
-        {favourites?.map(repo =>
-          <FavItem repo={repo} key={repo} />
-        )}
-      </ul>
-    </>
+    <ul className='flex flex-col gap-5' >
+      {!data.length && !isLoading &&
+        <li className='text-center' >No items</li>
+      }
+      {isLoading &&
+        <li><Loader /></li>
+      }
+      {data.map(repo =>
+        <FavItem 
+          repo={repo} 
+          key={repo.id} 
+        />
+      )}
+      {isError &&
+        <li><Error /></li>
+      }
+    </ul>
   )
 }

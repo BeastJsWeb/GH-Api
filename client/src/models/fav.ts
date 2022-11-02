@@ -1,3 +1,10 @@
 export interface IFav {
-  favourites: string[];
+  id: number;
+  name: string;
+  avatar: string;
+  url: string;
+}
+
+export interface serverResponse {
+  favourites: IFav[];
 }

@@ -1,19 +1,19 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
 
-import { githubApi } from "./github/github.api";
 import { githubReducer } from "./github/github.slice";
-import { jsonServerApi } from "./json-server/jsonServer.api";
+import { gitHubAPI } from "../services/gitHubService";
+import { favouritesAPI } from "../services/FavouritesService";
 
 export const store = configureStore({
   reducer: {
-    [githubApi.reducerPath]: githubApi.reducer,
-    [jsonServerApi.reducerPath]: jsonServerApi.reducer,
+    [gitHubAPI.reducerPath]: gitHubAPI.reducer,
+    [favouritesAPI.reducerPath]: favouritesAPI.reducer,
     github: githubReducer 
   },
   middleware: getDefaultMiddleware => getDefaultMiddleware()
-  .concat(githubApi.middleware)
-  .concat(jsonServerApi.middleware)
+  .concat(gitHubAPI.middleware)
+  .concat(favouritesAPI.middleware)
 })
 
 setupListeners(store.dispatch)

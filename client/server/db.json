@@ -1,6 +1,16 @@
 {
   "favourites": [
-    "https://github.com/git/git-scm.com",
-    "https://github.com/git/gitscm-old"
+    {
+      "id": 170876990,
+      "url": "https://github.com/github/.github",
+      "name": "github/.github",
+      "avatar": "https://avatars.githubusercontent.com/u/9919?v=4"
+    },
+    {
+      "id": 444856506,
+      "url": "https://github.com/github/actions-oidc-gateway-example",
+      "name": "github/actions-oidc-gateway-example",
+      "avatar": "https://avatars.githubusercontent.com/u/9919?v=4"
+    }
   ]
 }
