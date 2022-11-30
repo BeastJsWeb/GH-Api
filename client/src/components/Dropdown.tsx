@@ -1,7 +1,6 @@
 import {FC} from 'react'
-
-import { Error } from './UI/Error'
-import { Loader } from './UI/Loader'
+import { Error } from './Error'
+import { Loader } from './Loader'
 import {IUser} from '../models/users'
 
 interface DropdownProps {
@@ -27,7 +26,7 @@ export const Dropdown: FC<DropdownProps> =
         <li className='px-2' >Users not found</li>
       }
       {isLoading && 
-        <Loader />
+        <Loader/>
       }
       {data.map(user =>
         <li 
@@ -39,7 +38,7 @@ export const Dropdown: FC<DropdownProps> =
         </li>  
       )}
       {isError && 
-        <Error />
+        <Error/>
       }
     </ul>
   )

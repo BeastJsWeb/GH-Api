@@ -1,13 +1,11 @@
 import { createApi, fetchBaseQuery } from "@reduxjs/toolkit/query/react"
-
-import { IFav } from "../models/fav"
-import { SERVER_API } from "./const"
+import { IFav } from "../models/favourites"
 
 export const favouritesAPI = createApi({
   reducerPath: 'favourites/api',
   tagTypes: ['Repos'],
   baseQuery: fetchBaseQuery({
-    baseUrl: SERVER_API
+    baseUrl: 'http://localhost:3002/'
   }),
   endpoints: build => ({
     getFavourites: build.query<IFav[], void>({
@@ -18,7 +16,7 @@ export const favouritesAPI = createApi({
           : ['Repos'],
     }),
     addRepo: build.mutation<IFav, Partial<IFav>>({
-      query: (body) => ({
+      query: body => ({
         url: 'favourites',
         method: 'POST',
         body
@@ -26,9 +24,24 @@ export const favouritesAPI = createApi({
       invalidatesTags: ['Repos']
     }),
     removeRepo: build.mutation<{id: number}, number>({
-      query: (id) => ({
+      query: id => ({
         url: `favourites/${id}`,
         method: 'DELETE'
+      }),
+      invalidatesTags: ['Repos']
+    }),
+    removeAll: build.mutation<IFav[], void>({
+      query: () => ({
+        url: `favourites`,
+        method: 'DELETE'
+      }),
+      invalidatesTags: ['Repos']
+    }),
+    editRepo: build.mutation<IFav, Partial<IFav>>({
+      query: body => ({
+        url: `favourites/${body.id}`,
+        method: 'PUT',
+        body
       }),
       invalidatesTags: ['Repos']
     })

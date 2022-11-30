@@ -1,13 +1,11 @@
 import {createApi, fetchBaseQuery} from '@reduxjs/toolkit/query/react'
-
-import { GITHUB_API } from './const'
 import { ServerResponse, IUser } from '../models/users'
 import {IRepo} from '../models/repos'
 
 export const gitHubAPI = createApi({
   reducerPath: 'gitHub/api',
   baseQuery: fetchBaseQuery({
-    baseUrl: GITHUB_API
+    baseUrl: 'https://api.github.com/'
   }),
   refetchOnFocus: true,
   endpoints: build => ({

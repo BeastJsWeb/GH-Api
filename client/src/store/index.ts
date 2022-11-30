@@ -1,6 +1,5 @@
 import { configureStore } from "@reduxjs/toolkit";
 import { setupListeners } from "@reduxjs/toolkit/dist/query";
-
 import { githubReducer } from "./github/github.slice";
 import { gitHubAPI } from "../services/gitHubService";
 import { favouritesAPI } from "../services/FavouritesService";
